@@ -20,8 +20,9 @@ from load_LINEMOD import load_LINEMOD_data
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+device = torch.device("mps") if torch.backends.mps.is_available() else device
 
+print(device)
 np.random.seed(0)
 DEBUG = False
 
@@ -736,7 +737,7 @@ def train():
             pose = poses[img_i, :3,:4]
 
             if N_rand is not None:
-                rays_o, rays_d = get_rays(H, W, K, torch.tensor(pose, device=device))  # (H, W, 3), (H, W, 3)
+                rays_o, rays_d = get_rays(H, W, K, pose.to(device))  # (H, W, 3), (H, W, 3)
 
                 if i < args.precrop_iters:
                     dH = int(H//2 * args.precrop_frac)

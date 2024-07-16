@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+device = torch.device("mps") if torch.backends.mps.is_available() else device
 
 # Misc
 img2mse = lambda x, y : torch.mean((x - y) ** 2)
